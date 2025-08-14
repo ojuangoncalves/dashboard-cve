@@ -136,10 +136,11 @@ interface Address {
   interface chargeBoxNotification {
   type: string;
   chargeBoxId: string;
+  chargeBoxUuid: string | null;
   addressState: string | null;
   addressCity: string | null;
   addressStreet: string | null;
-  registrationStatus: string;
+  registrationStatus: string | null;
   connectorErrorCode: string | null;
   connectorErrorMsg: string | null;
   chargeBoxName: string;
@@ -151,9 +152,10 @@ interface Address {
   userExternalId: string | null;
   chargeBoxGroupExternalId: string | null;
   notificationPk: number;
-  connectorId: string | null;
-  transactionId: string | null;
+  connectorId: number | null;
+  transactionId: number | null;
   userPk: number | null;
+  notified: boolean | null;
   }
   
   // Interface para o retorno completo do JSON

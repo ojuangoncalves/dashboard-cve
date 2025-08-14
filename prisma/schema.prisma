@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model ChargeBoxNotification {
+  notificationPk           Int      @id @map("notificationPk")
+  type                     String
+  chargeBoxId              String
+  chargeBoxUuid            String?
+  addressState             String? // null => opcional
+  addressCity              String?
+  addressStreet            String?
+  registrationStatus       String?
+  connectorErrorCode       String?
+  connectorErrorMsg        String?
+  chargeBoxName            String
+  notificationTimestampDT  String @map("notificationTimestampDT")
+  userName                 String?
+  lastName                 String?
+  idTag                    String?
+  connectorType            String?
+  userExternalId           String?
+  chargeBoxGroupExternalId String?
+  connectorId              Int?
+  transactionId            Int?
+  userPk                   Int?
+  notified                 Boolean?
+
+  @@map("chargeBoxNotifications")
+}

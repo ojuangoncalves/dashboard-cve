@@ -2,10 +2,22 @@ import axios from 'axios'
 
 import { getAuthToken } from '@/services/get-token'
 import { SetStateAction } from 'react'
+// import { PrismaClient } from "../../prisma/generated/prisma";
 
-export const baseUrl = 'https://cs.intelbras-cve-pro.com.br'
+// const globalForPrisma = global as unknown as { prisma: PrismaClient }
+// export const prisma = globalForPrisma.prisma || new PrismaClient()
 
-export const apiKey = '7c634059-245d-42e1-be90-7f1f56f863ff'
+// if (process.env.NODE_ENV != 'production') {
+//   globalForPrisma.prisma = prisma;
+// }
+
+export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+export const apiKey = process.env.NEXT_PUBLIC_API_KEY
+
+// export const smtpUser = process.env.SMTP_USER
+// export const smtpPass = process.env.SMTP_PASSWORD
+// export const smtpHost = process.env.SMTP_HOST
+// export const smtpPort = process.env.SMTP_PORT
 
 const getUserToken = async() => {
     let userToken: string | undefined
@@ -51,6 +63,7 @@ export const testeChargeBoxs: Record<string, string> = {
     st02: 'MOVE_LAB_INTELBRAS03'
 }
 
+// Responsável por ajustar a data da notificão para o horário correto
 const adjustNotificationTime = (dateTimeString: string): string => {
     const [datePart, timePart] = dateTimeString.split(' ')
     const [year, month, day] = datePart.split('-').map(Number)
@@ -67,6 +80,7 @@ const adjustNotificationTime = (dateTimeString: string): string => {
     return adjustedDate
 }
 
+// Pega a notificação das estações selecionadas
 export async function getNotificationsData(headers: customRequestHeaders,
         setNotifications: React.Dispatch<SetStateAction<chargeBoxNotification[]>>
 ) {
@@ -92,6 +106,7 @@ export async function getNotificationsData(headers: customRequestHeaders,
                 notificationTimestampDT: adjustNotificationTime(notification.notificationTimestampDT)
             }))
             setNotifications(adjustedNotifications)
+            // console.log(adjustedNotifications)
         })
     } catch(error) {
         console.error("Erro ao buscar dados: ", error)
@@ -100,10 +115,12 @@ export async function getNotificationsData(headers: customRequestHeaders,
 }
 
 
-// pega os dados na API
+// Pega os dados de todas as estações do Balneário Shopping
 export async function getChargePointsData(headers: customRequestHeaders,
         setChargePoints: React.Dispatch<React.SetStateAction<ChargePoint[]>>
     ) {
+
+    let allChargePoints: ChargePoint[] = []
 
     try {
         await axios(`${baseUrl}/api/v1/chargepoints`, {
@@ -116,11 +133,16 @@ export async function getChargePointsData(headers: customRequestHeaders,
         })
         .then(resp => resp.data)
         .then(resp => {
-            setChargePoints(resp.chargePointList)
-            // ChargePointsList = resp.chargePointList
+            allChargePoints = resp.chargePointList
+            // setChargePoints(resp.chargePointList)
         })
     } catch (error) {
         console.error("Erro ao buscar dados: ", error)
         return
     }
+
+    let chargePointsBS = allChargePoints.filter(chargePoint => chargePoint.tenantPk == 351)
+    chargePointsBS.sort((a, b) => a.description.localeCompare(b.description))
+
+    setChargePoints(chargePointsBS)
 }

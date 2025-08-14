@@ -5,6 +5,7 @@ import { getAuthToken } from "./services/get-token";
 
 const protectedRoutes = ['/']
 
+// Responsável por identificar se o usuário está autenticado
 export default async function middleware(req: NextRequest) {
 
     const userToken = await getAuthToken()

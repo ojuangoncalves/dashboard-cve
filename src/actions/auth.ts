@@ -11,6 +11,8 @@ const config = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production"
 }
+
+// pega os dados digitados no formulário, cria o cookie com o tokien de autenticação e chama a função de login
 export async function loginUserAction(prevState: any, formData: FormData) {
     const fields = {
         email: formData.get('email')?.toString(),

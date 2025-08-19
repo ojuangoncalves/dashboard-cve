@@ -129,6 +129,9 @@ export async function getChargePointsData(headers: customRequestHeaders,
                 Platform: headers.Platform,
                 Authorization: headers.Authorization,
                 Accept: headers.Accept
+            },
+            params: {
+                tenantPk: 351
             }
         })
         .then(resp => resp.data)
@@ -141,8 +144,8 @@ export async function getChargePointsData(headers: customRequestHeaders,
         return
     }
 
-    let chargePointsBS = allChargePoints.filter(chargePoint => chargePoint.tenantPk == 351)
-    chargePointsBS.sort((a, b) => a.description.localeCompare(b.description))
+    // let chargePointsBS = allChargePoints.filter(chargePoint => chargePoint.tenantPk == 351)
+    allChargePoints.sort((a, b) => a.description.localeCompare(b.description))
 
-    setChargePoints(chargePointsBS)
+    setChargePoints(allChargePoints)
 }

@@ -82,9 +82,9 @@ const adjustNotificationTime = (dateTimeString: string): string => {
 
 // Pega a notificação das estações selecionadas
 export async function getNotificationsData(headers: customRequestHeaders,
-        setNotifications: React.Dispatch<SetStateAction<chargeBoxNotification[]>>
+        setNotifications: React.Dispatch<SetStateAction<chargeBoxNotification[]>>,
+        chargeBoxIds: string[]
 ) {
-
     try {
         await axios(`${baseUrl}/api/v1/notification/chargeBox`, {
             method: 'get',
@@ -94,7 +94,7 @@ export async function getNotificationsData(headers: customRequestHeaders,
                 Accept: headers.Accept
             },
             params: {
-                chargeBoxIds: Object.values(bsChargeBoxs),
+                chargeBoxIds: chargeBoxIds,
                 limit: 20
             }
         })
@@ -117,7 +117,8 @@ export async function getNotificationsData(headers: customRequestHeaders,
 
 // Pega os dados de todas as estações do Balneário Shopping
 export async function getChargePointsData(headers: customRequestHeaders,
-        setChargePoints: React.Dispatch<React.SetStateAction<ChargePoint[]>>
+        setChargePoints: React.Dispatch<React.SetStateAction<ChargePoint[]>>,
+        tenantPk: string
     ) {
 
     let allChargePoints: ChargePoint[] = []
@@ -131,7 +132,7 @@ export async function getChargePointsData(headers: customRequestHeaders,
                 Accept: headers.Accept
             },
             params: {
-                tenantPk: 351
+                tenantPk: tenantPk
             }
         })
         .then(resp => resp.data)
@@ -146,6 +147,7 @@ export async function getChargePointsData(headers: customRequestHeaders,
 
     // let chargePointsBS = allChargePoints.filter(chargePoint => chargePoint.tenantPk == 351)
     allChargePoints.sort((a, b) => a.description.localeCompare(b.description))
+
 
     setChargePoints(allChargePoints)
 }

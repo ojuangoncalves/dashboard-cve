@@ -7,6 +7,7 @@ export default async function Home() {
 	const headers = await getHeaders()
 
 	return(
-		<Dashboard headers={headers} />
+		// <Dashboard headers={headers} />
+		<h1>PÁGINA INICIAL</h1>
 	)
 }

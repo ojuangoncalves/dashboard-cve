@@ -6,11 +6,10 @@ import { getHeaders } from "@/utils/util"
 
 // const validTenants = ["351", "352"]
 
+// @ts-ignore
 export default async function Tenant(
     { params } :{
-        params: {
-            tenant: string
-        }
+        params: Promise<{ tenant: string }>
     }
 ) {
     const { tenant } = await params

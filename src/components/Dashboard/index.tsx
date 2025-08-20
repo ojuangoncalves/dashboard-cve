@@ -8,6 +8,7 @@ import Notifications from '@/components/Notifications'
 
 interface DashboardProps {
 	headers: customRequestHeaders
+	tenantPk: string
 }
 
 
@@ -16,10 +17,10 @@ export default function Dashboard(props: DashboardProps) {
 	const [chargePoints, setChargePoints] = useState<ChargePoint[]>([])
 	// ciclo de requisições na API
 	useEffect(() => {
-		getChargePointsData(props.headers, setChargePoints)
+		getChargePointsData(props.headers, setChargePoints, props.tenantPk)
 
 		const interval = setInterval(() => {
-			getChargePointsData(props.headers, setChargePoints)
+			getChargePointsData(props.headers, setChargePoints, props.tenantPk)
 		}, 60000)
 
 		return () => {
@@ -35,7 +36,7 @@ export default function Dashboard(props: DashboardProps) {
 
 		<section className='flex flex-col-reverse items-center gap-10 lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:items-start'>
 			
-			<Notifications headers={props.headers} />
+			<Notifications headers={props.headers} chargePoints={chargePoints} />
 
 			<div className='flex flex-col justify-between gap-14 xl:col-span-2'>
 				<Caption />

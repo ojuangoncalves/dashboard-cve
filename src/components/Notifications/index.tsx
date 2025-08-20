@@ -1,10 +1,11 @@
-import axios from 'axios'
-import { useEffect, useState} from 'react'
+// import axios from 'axios'
+import { useEffect, useRef, useState} from 'react'
 import { getNotificationsData } from '@/utils/util'
 import { PiWifiHighFill, PiWifiSlashDuotone, PiArrowRightBold } from 'react-icons/pi'
 
 interface NotificationsProps {
     headers: customRequestHeaders
+    chargePoints: ChargePoint[]
 }
 
 // async function handleNotifications(notifications: chargeBoxNotification[]) {
@@ -25,16 +26,23 @@ export default function Notifications(props: NotificationsProps) {
     //     handleNotifications(notifications)
     // }, [notifications])
 
+    const chargePointsId = props.chargePoints.map(chargepoint => chargepoint.chargeBoxId)
+    const idsRef = useRef(chargePointsId)
+
+    useEffect(() => { idsRef.current = chargePointsId }, [chargePointsId])
+    
     useEffect(() => {
-        getNotificationsData(props.headers, setNotifications)
-
-        const interval = setInterval(() => {
-            getNotificationsData(props.headers, setNotifications)
-        }, 60000)
-
-        return () => {
-            clearInterval(interval)
+        const tick = () => {
+            const ids = idsRef.current
+            if(!ids?.length) return
+            getNotificationsData(props.headers, setNotifications, ids)
         }
+
+        tick()
+        
+        const interval = setInterval(tick, 60000)
+
+        return () => clearInterval(interval)
 
     }, [])
     

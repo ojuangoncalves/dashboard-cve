@@ -1,5 +1,4 @@
-import Dashboard from "@/components/Dashboard"
-
+import Caurosel from "@/components/Caurosel"
 import { getHeaders } from "@/utils/util"
 
 export default async function Home() {
@@ -7,7 +6,6 @@ export default async function Home() {
 	const headers = await getHeaders()
 
 	return(
-		// <Dashboard headers={headers} />
-		<h1>PÁGINA INICIAL</h1>
+		<Caurosel />
 	)
 }

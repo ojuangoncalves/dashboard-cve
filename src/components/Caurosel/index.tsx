@@ -1,9 +1,24 @@
 //
 
-import StatusCard from "../StatusCard";
+import TenantCard from "../TenantCard";
 
-const HomeCard = () => {
+export default function Caurosel() {
   const cardData = [
+    {
+      title: "Balneário",
+      stats: [3, 2, 1, 0] as [number, number, number, number],
+      link: "/balneario-stations",
+    },
+    {
+      title: "Continente",
+      stats: [4, 2, 0, 0] as [number, number, number, number],
+      link: "/continente-stations",
+    },
+    {
+      title: "Neumarkt",
+      stats: [6, 0, 0, 0] as [number, number, number, number],
+      link: "/neumarkt-stations",
+    },
     {
       title: "Balneário",
       stats: [3, 2, 1, 0] as [number, number, number, number],
@@ -22,10 +37,9 @@ const HomeCard = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-8 bg-neutral-900">
-      <div className="grid w-full max-w-4xl grid-cols-1 gap-6 md:grid-cols-3">
+      <div className="flex w-full flex-row justify-between gap-6 border border-red-600 overflow-hidden">
         {cardData.map((data, index) => (
-          <StatusCard
+          <TenantCard
             key={index}
             title={data.title}
             stats={data.stats}
@@ -33,8 +47,5 @@ const HomeCard = () => {
           />
         ))}
       </div>
-    </div>
   );
 };
-
-export default HomeCard;

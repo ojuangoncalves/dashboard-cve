@@ -81,10 +81,10 @@ const adjustNotificationTime = (dateTimeString: string): string => {
 }
 
 // Pega a notificação das estações selecionadas
-export async function getNotificationsData(headers: CustomRequestHeaders,
-        setNotifications: React.Dispatch<SetStateAction<ChargeBoxNotification[]>>,
-        chargeBoxIds: string[]
-) {
+export async function getNotificationsData(chargeBoxIds?: string[]) {
+    const headers = await getHeaders()
+    let adjustedNotifications: ChargeBoxNotification[] = []
+    
     try {
         await axios(`${baseUrl}/api/v1/notification/chargeBox`, {
             method: 'get',
@@ -101,28 +101,25 @@ export async function getNotificationsData(headers: CustomRequestHeaders,
         .then(resp => resp.data)
         .then(resp => {
             // Ajusta o horário para cada notificação
-            const adjustedNotifications = resp.notificationList.map((notification: ChargeBoxNotification) => ({
+            adjustedNotifications = resp.notificationList.map((notification: ChargeBoxNotification) => ({
                 ...notification,
                 notificationTimestampDT: adjustNotificationTime(notification.notificationTimestampDT)
             }))
-            setNotifications(adjustedNotifications)
-            // console.log(adjustedNotifications)
         })
     } catch(error) {
         console.error("Erro ao buscar dados: ", error)
         return
     }
+
+    return adjustedNotifications
 }
 
 
 // Pega os dados de todas as estações do Balneário Shopping
-export async function getChargePointsData(
-    headers: CustomRequestHeaders,
-    setChargePoints: React.Dispatch<React.SetStateAction<ChargePoint[]>>,
-    tenantPk?: string
-    ) {
+export async function getChargePointsData(tenantPk?: string) {
 
     let allChargePoints: ChargePoint[] = []
+    const headers = await getHeaders()
 
     try {
         await axios(`${baseUrl}/api/v1/chargepoints`, {
@@ -148,16 +145,14 @@ export async function getChargePointsData(
     allChargePoints.sort((a, b) => a.description.localeCompare(b.description))
 
 
-    setChargePoints(allChargePoints)
+    return allChargePoints
 }
 
-
-export async function createTenants(
-    headers: CustomRequestHeaders,
-    setTenants: React.Dispatch<React.SetStateAction<Tenant[]>>
-) {
+export async function createTenants() {
 
     let allChargePoints: ChargePoint[] = []
+
+    const headers = await getHeaders()
 
     try {
         await axios(`${baseUrl}/api/v1/chargepoints`, {
@@ -208,5 +203,5 @@ export async function createTenants(
 
     const allTenants = [balnearioChargepoints, alphavilleChargepoints, revendaChargepoints, longstayChargepoints, mvrChargepoints, aabmChargepoints]
 
-    setTenants(allTenants)
+    return allTenants
 }

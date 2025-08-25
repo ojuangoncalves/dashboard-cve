@@ -1,24 +1,29 @@
+// import { useState, useEffect } from "react";
 'use client'
-
-import { useState, useEffect } from "react";
+import useSWR from "swr";
 
 import TenantCard from "../TenantCard";
-import { createTenants } from "@/utils/util"; 
+import { createTenants, baseUrl } from "@/utils/util";
+import LoadingIndicator from "../LoadingIndicator";
 
 interface CauroselProps {
 	headers: CustomRequestHeaders
 }
 
 export default function Caurosel(props: CauroselProps) {
-  const [allTenants, setAllTenants] = useState<Tenant[]>([])
 
-  useEffect(() => {
-    createTenants(props.headers, setAllTenants)
-  }, [])
+  const { data: allTenants, error, isLoading } = useSWR(`${baseUrl}/api/v1/chargepoints`, createTenants, {
+    refreshInterval: 60000,
+    revalidateOnFocus: true
+  })
+
+  if (isLoading) return <LoadingIndicator />
+  if (error) return <p>Erro ao carregar</p>
+
 
   return (
       <div className="flex w-full flex-row justify-between gap-6 overflow-hidden">
-        {allTenants.map(tenant => (
+        {allTenants?.map(tenant => (
           <TenantCard
             key={tenant.tenantPk}
             title={tenant.name}

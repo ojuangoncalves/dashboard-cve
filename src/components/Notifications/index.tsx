@@ -1,57 +1,33 @@
 // import axios from 'axios'
-import { useEffect, useRef, useState} from 'react'
+import { useRef} from 'react'
 import { getNotificationsData } from '@/utils/util'
 import { PiWifiHighFill, PiWifiSlashDuotone, PiArrowRightBold } from 'react-icons/pi'
+import useSWR from 'swr'
+import LoadingIndicator from '../LoadingIndicator'
 
 interface NotificationsProps {
     headers: CustomRequestHeaders
-    chargePoints: ChargePoint[]
+    chargePoints?: ChargePoint[]
 }
 
-// async function handleNotifications(notifications: chargeBoxNotification[]) {
-//     await axios.post('/api/notifications', { notifications })
-//     .then(response => {
-//         console.log(response)
-//     })
-//     .catch(error => {
-//         console.error(error)
-//     })
-// }
-
-
 export default function Notifications(props: NotificationsProps) {
-    const [notifications, setNotifications] = useState<ChargeBoxNotification[]>([])
 
-    // useEffect(() => {
-    //     handleNotifications(notifications)
-    // }, [notifications])
+    const chargePointsId = props.chargePoints?.map(chargepoint => chargepoint.chargeBoxId)
+    const ids = useRef(chargePointsId).current
 
-    const chargePointsId = props.chargePoints.map(chargepoint => chargepoint.chargeBoxId)
-    const idsRef = useRef(chargePointsId)
+    const { data: notifications, error, isLoading } = useSWR([ids], ([ids]) => getNotificationsData(ids), {
+        refreshInterval: 60000,
+        revalidateOnFocus: true
+    })
 
-    useEffect(() => { idsRef.current = chargePointsId }, [chargePointsId])
-    
-    useEffect(() => {
-        const tick = () => {
-            const ids = idsRef.current
-            if(!ids?.length) return
-            getNotificationsData(props.headers, setNotifications, ids)
-        }
-
-        tick()
-        
-        const interval = setInterval(tick, 60000)
-
-        return () => clearInterval(interval)
-
-    }, [])
-    
+    if(isLoading) return <LoadingIndicator />
+    if(error) return <p>Erro ao carregar</p>
 
     return (
         <div className='h-[500px] overflow-y-scroll lg:mt-12 xl:mt-4 custom-scrollbar rounded-xl bg-neutral-700 shadow-xl p-5'>
             <h2 className='text-3xl font-bold'>Notificações</h2>
             <ul>
-                { notifications.map((notification: ChargeBoxNotification) => {
+                { notifications?.map((notification: ChargeBoxNotification) => {
                     switch(notification.type) {
                         case "Connected":
                             return (

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { PiArrowRightBold } from "react-icons/pi";
+import StatusCircle from "../StatusCircle";
 
 interface StatusCardProps {
   title: string;
@@ -44,29 +45,10 @@ export default function TenantCard(props: StatusCardProps) {
       <h3 className="text-2xl font-semibold">{props.title}</h3>
 
       <div className="flex items-center justify-center w-full space-x-2 md:space-x-4">
-          <div
-            className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 text-sm font-bold text-white rounded-full bg-[#2e8024]`}
-          >
-            {availableChargepoints}
-          </div>
-
-          <div
-            className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 text-sm font-bold text-white rounded-full bg-[#ed1c00]`}
-          >
-            {offlineChargepoints}
-          </div>
-
-          <div
-            className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 text-sm font-bold text-white rounded-full bg-[#e4c306]`}
-          >
-            {inuseChargepoints}
-          </div>
-
-          <div
-            className={`flex items-center justify-center w-8 h-8 md:w-10 md:h-10 text-sm font-bold text-white rounded-full bg-[#525252]`}
-          >
-            {maintenanceChargepoints}
-          </div>
+          <StatusCircle bgColor="#2e8024" numChargepoints={availableChargepoints} />
+          <StatusCircle bgColor="#ed1c00" numChargepoints={offlineChargepoints} />
+          <StatusCircle bgColor="#e4c306" numChargepoints={inuseChargepoints} />
+          <StatusCircle bgColor="#525252" numChargepoints={maintenanceChargepoints} />
       </div>
 
       <Link

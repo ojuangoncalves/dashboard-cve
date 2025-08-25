@@ -1,5 +1,5 @@
-import Dashboard from "@/components/Dashboard"
-
+import Caurosel from "@/components/Caurosel"
+import Title from "@/components/Title"
 import { getHeaders } from "@/utils/util"
 
 export default async function Home() {
@@ -7,7 +7,9 @@ export default async function Home() {
 	const headers = await getHeaders()
 
 	return(
-		// <Dashboard headers={headers} />
-		<h1>PÁGINA INICIAL</h1>
+		<main className='flex flex-col justify-between gap-14'>
+			<Title title="Monitoramento CVE" />
+			<Caurosel headers={headers}/>
+		</main>
 	)
 }

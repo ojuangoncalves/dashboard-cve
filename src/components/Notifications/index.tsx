@@ -4,7 +4,7 @@ import { getNotificationsData } from '@/utils/util'
 import { PiWifiHighFill, PiWifiSlashDuotone, PiArrowRightBold } from 'react-icons/pi'
 
 interface NotificationsProps {
-    headers: customRequestHeaders
+    headers: CustomRequestHeaders
     chargePoints: ChargePoint[]
 }
 
@@ -20,7 +20,7 @@ interface NotificationsProps {
 
 
 export default function Notifications(props: NotificationsProps) {
-    const [notifications, setNotifications] = useState<chargeBoxNotification[]>([])
+    const [notifications, setNotifications] = useState<ChargeBoxNotification[]>([])
 
     // useEffect(() => {
     //     handleNotifications(notifications)
@@ -51,7 +51,7 @@ export default function Notifications(props: NotificationsProps) {
         <div className='h-[500px] overflow-y-scroll lg:mt-12 xl:mt-4 custom-scrollbar rounded-xl bg-neutral-700 shadow-xl p-5'>
             <h2 className='text-3xl font-bold'>Notificações</h2>
             <ul>
-                { notifications.map((notification: chargeBoxNotification) => {
+                { notifications.map((notification: ChargeBoxNotification) => {
                     switch(notification.type) {
                         case "Connected":
                             return (

@@ -7,7 +7,7 @@ import Caption from '@/components/Caption'
 import Notifications from '@/components/Notifications'
 
 interface DashboardProps {
-	headers: customRequestHeaders
+	headers: CustomRequestHeaders
 	tenantPk: string
 }
 
@@ -31,7 +31,7 @@ export default function Dashboard(props: DashboardProps) {
     return (
         <main className='flex flex-col justify-between gap-14'>
 		<header className='w-full h-12 flex justify-center items-center'>
-			<h1 className='text-center text-3xl md:text-5xl font-bold'>Monitoramento CVE - Balneário Shopping</h1>
+			<h1 className='text-center text-3xl md:text-5xl font-bold'>Monitoramento CVE</h1>
 		</header>
 
 		<section className='flex flex-col-reverse items-center gap-10 lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:items-start'>

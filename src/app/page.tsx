@@ -6,6 +6,6 @@ export default async function Home() {
 	const headers = await getHeaders()
 
 	return(
-		<Caurosel />
+		<Caurosel headers={headers}/>
 	)
 }

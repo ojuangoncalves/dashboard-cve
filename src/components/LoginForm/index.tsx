@@ -8,7 +8,7 @@ export default function LoginForm() {
     const [state, action] = useActionState(loginUserAction, undefined)
 
     return(
-        <main className="flex flex-col items-center gap-20 w-full h-screen justify-center">
+        <main className="flex flex-col items-center gap-20 w-full justify-center">
             <h1 className="text-5xl font-bold text-center">Login</h1>
 
             <form className="bg-neutral-700 w-96 h-80 rounded-xl shadow-xl flex flex-col justify-between py-10 items-center" action={action}>

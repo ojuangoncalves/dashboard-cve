@@ -81,10 +81,10 @@ const adjustNotificationTime = (dateTimeString: string): string => {
 }
 
 // Pega a notificação das estações selecionadas
-export async function getNotificationsData(headers: customRequestHeaders,
-        setNotifications: React.Dispatch<SetStateAction<chargeBoxNotification[]>>
-) {
-
+export async function getNotificationsData(chargeBoxIds?: string[]) {
+    const headers = await getHeaders()
+    let adjustedNotifications: ChargeBoxNotification[] = []
+    
     try {
         await axios(`${baseUrl}/api/v1/notification/chargeBox`, {
             method: 'get',
@@ -94,33 +94,65 @@ export async function getNotificationsData(headers: customRequestHeaders,
                 Accept: headers.Accept
             },
             params: {
-                chargeBoxIds: Object.values(bsChargeBoxs),
+                chargeBoxIds: chargeBoxIds,
                 limit: 20
             }
         })
         .then(resp => resp.data)
         .then(resp => {
             // Ajusta o horário para cada notificação
-            const adjustedNotifications = resp.notificationList.map((notification: chargeBoxNotification) => ({
+            adjustedNotifications = resp.notificationList.map((notification: ChargeBoxNotification) => ({
                 ...notification,
                 notificationTimestampDT: adjustNotificationTime(notification.notificationTimestampDT)
             }))
-            setNotifications(adjustedNotifications)
-            // console.log(adjustedNotifications)
         })
     } catch(error) {
         console.error("Erro ao buscar dados: ", error)
         return
     }
+
+    return adjustedNotifications
 }
 
 
 // Pega os dados de todas as estações do Balneário Shopping
-export async function getChargePointsData(headers: customRequestHeaders,
-        setChargePoints: React.Dispatch<React.SetStateAction<ChargePoint[]>>
-    ) {
+export async function getChargePointsData(tenantPk?: string) {
 
     let allChargePoints: ChargePoint[] = []
+    const headers = await getHeaders()
+
+    try {
+        await axios(`${baseUrl}/api/v1/chargepoints`, {
+            method: "get",
+            headers: {
+                Platform: headers.Platform,
+                Authorization: headers.Authorization,
+                Accept: headers.Accept
+            },
+            params: {
+                tenantPk: tenantPk
+            }
+        })
+        .then(resp => resp.data)
+        .then(resp => {
+            allChargePoints = resp.chargePointList
+        })
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error)
+        return
+    }
+
+    allChargePoints.sort((a, b) => a.description.localeCompare(b.description))
+
+
+    return allChargePoints
+}
+
+export async function createTenants() {
+
+    let allChargePoints: ChargePoint[] = []
+
+    const headers = await getHeaders()
 
     try {
         await axios(`${baseUrl}/api/v1/chargepoints`, {
@@ -134,15 +166,42 @@ export async function getChargePointsData(headers: customRequestHeaders,
         .then(resp => resp.data)
         .then(resp => {
             allChargePoints = resp.chargePointList
-            // setChargePoints(resp.chargePointList)
         })
     } catch (error) {
         console.error("Erro ao buscar dados: ", error)
         return
     }
 
-    let chargePointsBS = allChargePoints.filter(chargePoint => chargePoint.tenantPk == 351)
-    chargePointsBS.sort((a, b) => a.description.localeCompare(b.description))
+    let balnearioChargepoints :Tenant = { name: "Balneário", tenantPk: 351, chargepoints: [] }
+    let alphavilleChargepoints :Tenant = { name: "Alphaville", tenantPk: 92, chargepoints: [] }
+    let revendaChargepoints :Tenant = { name: "Revenda", tenantPk: 111, chargepoints: [] }
+    let longstayChargepoints :Tenant = { name: "Long Stay", tenantPk: 261, chargepoints: [] }
+    let mvrChargepoints :Tenant = { name: "MVR", tenantPk: 301, chargepoints: [] }
+    let aabmChargepoints :Tenant = { name: "AABM", tenantPk: 305, chargepoints: [] }
 
-    setChargePoints(chargePointsBS)
+    allChargePoints.forEach(chargepoint => {
+        switch(chargepoint.tenantPk) {
+            case 351:
+                balnearioChargepoints.chargepoints.push(chargepoint)
+                break
+            case 92:
+                alphavilleChargepoints.chargepoints.push(chargepoint)
+                break
+            case 111:
+                revendaChargepoints.chargepoints.push(chargepoint)
+                break
+            case 261:
+                longstayChargepoints.chargepoints.push(chargepoint)
+                break
+            case 301:
+                mvrChargepoints.chargepoints.push(chargepoint)
+                break
+            case 305:
+                aabmChargepoints.chargepoints.push(chargepoint)
+        }
+    })
+
+    const allTenants = [balnearioChargepoints, alphavilleChargepoints, revendaChargepoints, longstayChargepoints, mvrChargepoints, aabmChargepoints]
+
+    return allTenants
 }

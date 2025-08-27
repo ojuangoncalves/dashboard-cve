@@ -133,7 +133,7 @@ interface Address {
   }
   
   // Interface para cada notificação individual
-  interface chargeBoxNotification {
+  interface ChargeBoxNotification {
   type: string;
   chargeBoxId: string;
   chargeBoxUuid: string | null;
@@ -159,14 +159,20 @@ interface Address {
   }
   
   // Interface para o retorno completo do JSON
-  interface chargeBoxNotificationResponse {
+  interface ChargeBoxNotificationResponse {
   error: string | null;
   notificationList: chargeBoxNotificationList[];
   }
 
 
-  interface customRequestHeaders extends object {
+  interface CustomRequestHeaders extends object {
     Platform: string;
     Authorization: string | undefined;
     Accept: string;
+  }
+
+  interface Tenant {
+    name: string;
+    tenantPk: number;
+    chargepoints: ChargePoint[];
   }

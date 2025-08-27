@@ -8,6 +8,7 @@
 
 body {
   background-image: linear-gradient(to right, #1d1d1b, #302f2f);
+  width: 100%;
 }
 
 :root {

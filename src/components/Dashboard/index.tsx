@@ -1,11 +1,14 @@
 'use client'
 
-import { baseUrl, getChargePointsData } from '@/utils/util'
+import useSWR from 'swr'
+import { PiHouseFill, PiArrowLeftBold } from 'react-icons/pi'
+
+import { getChargePointsData } from '@/utils/util'
 import Caption from '@/components/Caption'
 import Notifications from '@/components/Notifications'
-import useSWR from 'swr'
 import LoadingIndicator from '../LoadingIndicator'
 import Header from '../Header'
+import Link from 'next/link'
 
 interface DashboardProps {
 	headers: CustomRequestHeaders
@@ -26,7 +29,13 @@ export default function Dashboard(props: DashboardProps) {
     return (
 		<main className='flex flex-col justify-between gap-14'>
 
-			<Header title='Monitoramento CVE'/>
+			<Link href="/" className='absolute left-14 top-16 flex flex-row items-center gap-2 hover:bg-neutral-700 px-4 py-2 rounded-md transition duration-300 '>
+				<PiArrowLeftBold size={25} />
+				<PiHouseFill size={30} className="" />
+				<span>Página Inicial</span>
+			</Link>
+
+				<Header title='Monitoramento CVE'/>
 
 			<section className='flex flex-col-reverse items-center gap-10 lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:items-start'>
 				
@@ -73,8 +82,8 @@ export default function Dashboard(props: DashboardProps) {
 													<p className="">{ chargepoint.description}</p>
 												</div>
 											)
-											}
-								}))
+										}
+							}))
 						}
 					</div>
 				</div>

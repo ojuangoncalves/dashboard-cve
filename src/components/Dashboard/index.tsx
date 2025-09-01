@@ -17,14 +17,6 @@ interface DashboardProps {
 }
 
 export default function Dashboard(props: DashboardProps) {
-  const {
-    data: chargePoints,
-    error,
-    isLoading,
-  } = useSWR([props.tenantPk], ([tenantPk]) => getChargePointsData(tenantPk), {
-    refreshInterval: 60000,
-    revalidateOnFocus: true,
-  });
   
 	const { data: chargePoints, error, isLoading } = useSWR([props.tenantPk], ([tenantPk]) => getChargePointsData(tenantPk), {
 		refreshInterval: 60000,

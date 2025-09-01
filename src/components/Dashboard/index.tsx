@@ -50,7 +50,7 @@ export default function Dashboard(props: DashboardProps) {
 										case "Available":
 										case "SuspendedEV":
 											return (
-												<div key={chargepoint.chargeBoxPk} className='bg-[#2e8024] w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl'>
+												<div key={chargepoint.chargeBoxPk} className='bg-dashgreen w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl'>
 												<img src={`/cveverde.png`} alt="" />
 												<p className="text-sm md:text-base">{ chargepoint.description}</p>
 											</div>
@@ -58,7 +58,7 @@ export default function Dashboard(props: DashboardProps) {
 										case "Unavailable":
 										case "Faulted":
 											return (
-												<div key={chargepoint.chargeBoxPk} className='bg-[#ed1c00] w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl animate-pulse-alert'>
+												<div key={chargepoint.chargeBoxPk} className='bg-dashred w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl animate-pulse-alert'>
 													<img src={`/cvevermelho.png`} alt="" />
 													<p className="text-sm md:text-base">{ chargepoint.description}</p>
 												</div>
@@ -68,14 +68,14 @@ export default function Dashboard(props: DashboardProps) {
 										case "Preparing":
 										case "SuspendedEVSE":
 											return (
-												<div key={chargepoint.chargeBoxPk} className='bg-[#e4c306] w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl'>
+												<div key={chargepoint.chargeBoxPk} className='bg-dashyellow w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl'>
 													<img src={`/cveamarelo.png`} alt="" />
 													<p className="">{ chargepoint.description}</p>
 												</div>
 											)
 										case "Maintenance":
 											return (
-												<div key={chargepoint.chargeBoxPk} className='bg-[#525252] w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl'>
+												<div key={chargepoint.chargeBoxPk} className='bg-dashgray w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl'>
 													<img src={`/cvecinza.png`} alt="" />
 													<p className="">{ chargepoint.description}</p>
 												</div>

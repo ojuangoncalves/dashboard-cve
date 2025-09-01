@@ -49,20 +49,6 @@ export const getHeaders = async ()=> {
     return header
 }
 
-export const bsChargeBoxs: Record<string, string> = {
-    bs01: 'JDBM1900047JI',
-    bs02: 'JDBM1400041QQ',
-    bs03: 'JDBM1400051N7',
-    bs04: 'JDBM1900034XZ',
-    bs05: 'JCBM1400043WL',
-    bs06: 'JDBM1400068Q8'
-}
-
-export const testeChargeBoxs: Record<string, string> = {
-    st01: 'MOVE_LAB_INTELBRAS01',
-    st02: 'MOVE_LAB_INTELBRAS03'
-}
-
 // Responsável por ajustar a data da notificão para o horário correto
 const adjustNotificationTime = (dateTimeString: string): string => {
     const [datePart, timePart] = dateTimeString.split(' ')

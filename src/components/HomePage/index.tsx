@@ -55,7 +55,7 @@ export default function HomePage(props: HomePageProps) {
   if (error) return <p>Erro ao carregar</p>;
 
   return (
-    <main className="flex flex-col justify-between">
+    <main className="flex flex-col justify-center gap-20">
       <header className="">
         <Header title="Monitoramento CVE" />
       </header>

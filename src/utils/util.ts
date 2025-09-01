@@ -188,6 +188,7 @@ export async function createTenants() {
     })
 
     const allTenants = [balnearioChargepoints, alphavilleChargepoints, revendaChargepoints, longstayChargepoints, mvrChargepoints, aabmChargepoints]
+    // const allTenants = [balnearioChargepoints]
 
     return allTenants
 }

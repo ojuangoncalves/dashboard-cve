@@ -9,7 +9,7 @@ interface CauroselProps {
 export default function Caurosel(props: CauroselProps) {
 
   return (
-    <div className="flex w-full flex-row justify-between gap-6 overflow-hidden">
+    <div className="flex flex-row gap-6">
       {props.allTenants?.map((tenant) => (
         <TenantCard
           key={tenant.tenantPk}

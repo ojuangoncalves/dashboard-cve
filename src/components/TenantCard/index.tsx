@@ -41,10 +41,10 @@ export default function TenantCard(props: StatusCardProps) {
 
 
   return (
-    <div className="flex flex-col items-center justify-between w-full p-4 space-y-4 text-white transition-shadow duration-300 rounded-lg shadow-xl bg-[#302F2F] hover:shadow-2xl">
-      <h3 className="text-2xl font-semibold">{props.title}</h3>
+    <div className="flex flex-col items-center justify-between w-5xl p-4 space-y-4 text-white transition-shadow duration-300 rounded-lg shadow-xl bg-[#302F2F] hover:shadow-2xl">
+      <h3 className="text-3xl font-semibold">{props.title}</h3>
 
-      <div className="flex items-center justify-center w-full space-x-2 md:space-x-4">
+      <div className="flex items-center justify-center w-full space-x-4">
           <StatusCircle bgColor="#2e8024" numChargepoints={availableChargepoints} />
           <StatusCircle bgColor="#ed1c00" numChargepoints={offlineChargepoints} />
           <StatusCircle bgColor="#e4c306" numChargepoints={inuseChargepoints} />

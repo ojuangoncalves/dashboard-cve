@@ -60,10 +60,10 @@ export default function HomePage(props: HomePageProps) {
         <Header title="Monitoramento CVE" />
       </header>
       <div className="flex items-center justify-center gap-20 w-full my-20 text-white rounded-lg">
-        <StatusCard title="Disponível" value={allAvailableChargepoints} color="bg-green-500" />
-        <StatusCard title="Offline" value={allOfflineChargepoints} color="bg-red-500" />
-        <StatusCard title="Ocupado" value={allInuseChargepoints} color="bg-yellow-500" />
-        <StatusCard title="Manutenção" value={allMaintenanceChargepoints} color="bg-[#878787]" />
+        <StatusCard title="Disponível" value={allAvailableChargepoints} color="bg-dashgreen" />
+        <StatusCard title="Offline" value={allOfflineChargepoints} color="bg-dashred" />
+        <StatusCard title="Ocupado" value={allInuseChargepoints} color="bg-dashyellow" />
+        <StatusCard title="Manutenção" value={allMaintenanceChargepoints} color="bg-dashgray" />
       </div>
       <Caurosel allTenants={allTenants}/>
     </main>

@@ -45,10 +45,10 @@ export default function TenantCard(props: StatusCardProps) {
       <h3 className="text-3xl font-semibold">{props.title}</h3>
 
       <div className="flex items-center justify-center w-full space-x-4">
-          <StatusCircle bgColor="#2e8024" numChargepoints={availableChargepoints} />
-          <StatusCircle bgColor="#ed1c00" numChargepoints={offlineChargepoints} />
-          <StatusCircle bgColor="#e4c306" numChargepoints={inuseChargepoints} />
-          <StatusCircle bgColor="#525252" numChargepoints={maintenanceChargepoints} />
+          <StatusCircle bgColor="dashgreen" numChargepoints={availableChargepoints} />
+          <StatusCircle bgColor="dashred" numChargepoints={offlineChargepoints} />
+          <StatusCircle bgColor="dashyellow" numChargepoints={inuseChargepoints} />
+          <StatusCircle bgColor="dashgray" numChargepoints={maintenanceChargepoints} />
       </div>
 
       <Link

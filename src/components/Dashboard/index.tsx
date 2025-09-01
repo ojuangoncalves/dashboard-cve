@@ -1,4 +1,5 @@
-'use client'
+"use client";
+
 
 import useSWR from 'swr'
 import { PiHouseFill, PiArrowLeftBold } from 'react-icons/pi'
@@ -11,13 +12,12 @@ import Header from '../Header'
 import Link from 'next/link'
 
 interface DashboardProps {
-	headers: CustomRequestHeaders
-	tenantPk: string
+  headers: CustomRequestHeaders;
+  tenantPk: string;
 }
 
-
 export default function Dashboard(props: DashboardProps) {
-
+  
 	const { data: chargePoints, error, isLoading } = useSWR([props.tenantPk], ([tenantPk]) => getChargePointsData(tenantPk), {
 		refreshInterval: 60000,
 		revalidateOnFocus: true
@@ -37,13 +37,11 @@ export default function Dashboard(props: DashboardProps) {
 
 				<Header title='Monitoramento CVE'/>
 
-			<section className='flex flex-col-reverse items-center gap-10 lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:items-start'>
-				
-				<Notifications headers={props.headers} chargePoints={chargePoints} />
+      	<section className="flex flex-col-reverse items-center gap-10 lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:items-start">
+        <Notifications headers={props.headers} chargePoints={chargePoints} />
 
-				<div className='flex flex-col justify-between gap-14 xl:col-span-2'>
-					<Caption />
-
+        <div className="flex flex-col justify-between gap-14 xl:col-span-2">
+          <Caption />
 
 					<div className='grid-cols-2 md:grid-cols-3 lg:grid-cols-2 grid xl:grid-cols-3 w-full m-auto place-items-center gap-y-10 gap-x-5'>
 						{  

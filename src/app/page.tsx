@@ -1,11 +1,10 @@
-import Caurosel from "@/components/Caurosel"
-import { getHeaders } from "@/utils/util"
+import { getHeaders } from "@/utils/util";
+import HomePage from "@/components/HomePage";
 
 export default async function Home() {
+  const headers = await getHeaders();
 
-	const headers = await getHeaders()
-
-	return(
-		<Caurosel headers={headers}/>
-	)
+  return (
+    <HomePage headers={headers} />
+  );
 }

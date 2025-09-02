@@ -14,12 +14,12 @@ export default function LoginForm() {
             <form className="bg-neutral-700 w-96 h-80 rounded-xl shadow-xl flex flex-col justify-between py-10 items-center" action={action}>
                 <label className="w-4/5 flex flex-col justify-center gap-1" htmlFor="email">
                     <p className="text-left text-lg">Email</p>
-                    <input className="text-black rounded-xl h-10 w-full px-4" type="text" id="email" name="email"/>
+                    <input className="text-black rounded-xl h-10 w-full px-4 bg-neutral-200" type="text" id="email" name="email"/>
                 </label>
 
                 <label className="w-4/5 flex flex-col justify-center gap-1" htmlFor="password">
                     <p className="text-left text-lg">Senha</p>
-                    <input className="text-black rounded-xl h-10 w-full px-4" type="password" id="password" name="password" />
+                    <input className="text-black rounded-xl h-10 w-full px-4 bg-neutral-200" type="password" id="password" name="password" />
                 </label>
 
                 <div>

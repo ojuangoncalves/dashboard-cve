@@ -24,8 +24,8 @@ export default function Notifications(props: NotificationsProps) {
     if(error) return <p>Erro ao carregar</p>
 
     return (
-        <div className='h-[500px] overflow-y-scroll lg:mt-12 xl:mt-4 custom-scrollbar rounded-xl bg-neutral-700 shadow-xl p-5'>
-            <h2 className='text-3xl font-bold'>Notificações</h2>
+        <div className='h-[700px] overflow-y-scroll lg:mt-12 xl:mt-4 custom-scrollbar rounded-xl bg-neutral-700 shadow-xl p-5'>
+            <h2 className='text-3xl lg:text-4xl font-bold'>Notificações</h2>
             <ul>
                 { notifications?.map((notification: ChargeBoxNotification) => {
                     switch(notification.type) {
@@ -33,11 +33,11 @@ export default function Notifications(props: NotificationsProps) {
                             return (
                                 <li
                                     key={notification.notificationPk}
-                                    className='bg-neutral-500 flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm px-8'
+                                    className='bg-neutral-500 flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm lg:text-lg px-8'
                                 >
-                                    <PiWifiHighFill size={30} />
+                                    <PiWifiHighFill size={50} />
                                     { notification.notificationTimestampDT }
-                                    <PiArrowRightBold size={40} />
+                                    <PiArrowRightBold size={50} />
                                     { notification.chargeBoxName }: Conectada
                                 </li>
                             )
@@ -45,11 +45,11 @@ export default function Notifications(props: NotificationsProps) {
                             return (
                                 <li
                                     key={notification.notificationPk}
-                                    className='bg-neutral-500 flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm px-8'
+                                    className='bg-neutral-500 flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm lg:text-lg px-8'
                                 >
-                                    <PiWifiSlashDuotone size={30} fill='#ed1c00' />
+                                    <PiWifiSlashDuotone size={50} fill='#ed1c00' />
                                     { notification.notificationTimestampDT }
-                                    <PiArrowRightBold size={40} />
+                                    <PiArrowRightBold size={50} />
                                     { notification.chargeBoxName }: Desconectada
                                 </li>
                             )

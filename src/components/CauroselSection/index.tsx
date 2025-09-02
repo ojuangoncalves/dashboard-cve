@@ -6,7 +6,7 @@ interface CauroselProps {
   allTenants: Tenant[] | undefined
 }
 
-export default function Caurosel(props: CauroselProps) {
+export default function CauroselSection(props: CauroselProps) {
 
   return (
     <div className="flex flex-row gap-6">

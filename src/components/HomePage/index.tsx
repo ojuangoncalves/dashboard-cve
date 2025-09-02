@@ -5,7 +5,7 @@ import { createTenants, baseUrl } from "@/utils/util";
 import LoadingIndicator from "../LoadingIndicator";
 import Header from "../Header";
 import StatusCard from "../StatusCard";
-import Caurosel from "../Caurosel";
+import CauroselSection from "../CauroselSection";
 
 interface HomePageProps {
   headers: CustomRequestHeaders;
@@ -65,7 +65,7 @@ export default function HomePage(props: HomePageProps) {
         <StatusCard title="Ocupado" value={allInuseChargepoints} color="bg-dashyellow" />
         <StatusCard title="Manutenção" value={allMaintenanceChargepoints} color="bg-dashgray" />
       </div>
-      <Caurosel allTenants={allTenants}/>
+      <CauroselSection allTenants={allTenants}/>
     </main>
   );
 }

@@ -1,8 +1,6 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --color-dashred: #ed1c00;
   --color-dashgreen: #2e8024;
   --color-dashyellow: #e4c306;
@@ -27,13 +25,11 @@
   }
 }
 
-* {
-  color: #fff;
-}
 
 body {
   background-image: linear-gradient(to right, #1d1d1b, #302f2f);
   width: 100%;
+  color: #fff;
 }
 
 :root {

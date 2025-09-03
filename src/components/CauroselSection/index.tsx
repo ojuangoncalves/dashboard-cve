@@ -22,7 +22,7 @@ export default function CauroselSection(props: CauroselProps) {
     >
       <CarouselContent className="">
         {props.allTenants?.map((tenant) => (
-          <CarouselItem className="-basis-1/4">
+          <CarouselItem key={tenant.tenantPk} className="-basis-1/4">
             <TenantCard
               key={tenant.tenantPk}
               title={tenant.name}

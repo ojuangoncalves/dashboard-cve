@@ -1,24 +1,36 @@
 // import axios from 'axios'
-import { useRef} from 'react'
-import { getNotificationsData } from '@/utils/util'
-import { PiWifiHighFill, PiWifiSlashDuotone, PiArrowRightBold } from 'react-icons/pi'
-import useSWR from 'swr'
-import LoadingIndicator from '../LoadingIndicator'
+import { useRef } from "react";
+import { getNotificationsData } from "@/utils/util";
+import {
+  PiWifiHighFill,
+  PiWifiSlashDuotone,
+  PiArrowRightBold,
+} from "react-icons/pi";
+import useSWR from "swr";
+import LoadingIndicator from "../LoadingIndicator";
 
 interface NotificationsProps {
-    headers: CustomRequestHeaders
-    chargePoints?: ChargePoint[]
+  headers: CustomRequestHeaders;
+  chargePoints?: ChargePoint[];
 }
 
 export default function Notifications(props: NotificationsProps) {
+  const chargePointsId = props.chargePoints?.map(
+    (chargepoint) => chargepoint.chargeBoxId
+  );
+  const ids = useRef(chargePointsId).current;
 
-    const chargePointsId = props.chargePoints?.map(chargepoint => chargepoint.chargeBoxId)
-    const ids = useRef(chargePointsId).current
+  const {
+    data: notifications,
+    error,
+    isLoading,
+  } = useSWR([ids], ([ids]) => getNotificationsData(ids), {
+    refreshInterval: 60000,
+    revalidateOnFocus: true,
+  });
 
-    const { data: notifications, error, isLoading } = useSWR([ids], ([ids]) => getNotificationsData(ids), {
-        refreshInterval: 60000,
-        revalidateOnFocus: true
-    })
+  if (isLoading) return <LoadingIndicator />;
+  if (error) return <p>Erro ao carregar</p>;
 
     if(isLoading) return <LoadingIndicator />
     if(error) return <p>Erro ao carregar</p>

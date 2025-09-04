@@ -27,9 +27,14 @@ export default function Dashboard(props: DashboardProps) {
 	if (error) return <p>Erro ao carregar</p>
 
     return (
-		<main className='flex flex-col justify-between gap-14'>
+		<main className='flex flex-col justify-between gap-14 pt-20 px-10'>
 
-			<Link href="/" className='absolute left-14 top-16 flex flex-row items-center gap-2 hover:bg-neutral-700 px-4 py-2 rounded-md transition duration-300 '>
+			<Link
+				href="/"
+				className='absolute left-14 top-16 flex flex-row items-center gap-2 px-4 py-2 rounded-md transition duration-300
+							hover:bg-linear-180 hover:from-card-bg-1 hover:from-0% hover:to-card-bg-2 hover:to-100% hover:bg-card-bg-3
+							hover:border hover:border-solid hover:border-card-border hover:brightness-150'
+			>
 				<PiArrowLeftBold size={25} />
 				<PiHouseFill size={30} className="" />
 				<span>Página Inicial</span>

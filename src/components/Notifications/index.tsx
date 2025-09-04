@@ -24,7 +24,10 @@ export default function Notifications(props: NotificationsProps) {
     if(error) return <p>Erro ao carregar</p>
 
     return (
-        <div className='h-[700px] overflow-y-scroll lg:mt-12 xl:mt-4 custom-scrollbar rounded-xl bg-neutral-700 shadow-xl p-5'>
+        <div
+            className='h-[700px] overflow-y-scroll lg:mt-12 xl:mt-4 custom-scrollbar rounded-xl shadow-xl p-5
+                        bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border'
+        >
             <h2 className='text-3xl lg:text-4xl font-bold'>Notificações</h2>
             <ul>
                 { notifications?.map((notification: ChargeBoxNotification) => {
@@ -33,7 +36,8 @@ export default function Notifications(props: NotificationsProps) {
                             return (
                                 <li
                                     key={notification.notificationPk}
-                                    className='bg-neutral-500 flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm lg:text-lg px-8'
+                                    className='flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm lg:text-lg px-8
+                                                bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border brightness-150'
                                 >
                                     <PiWifiHighFill size={50} />
                                     { notification.notificationTimestampDT }
@@ -45,7 +49,8 @@ export default function Notifications(props: NotificationsProps) {
                             return (
                                 <li
                                     key={notification.notificationPk}
-                                    className='bg-neutral-500 flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm lg:text-lg px-8'
+                                    className='flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm lg:text-lg px-8
+                                                bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border brightness-150'
                                 >
                                     <PiWifiSlashDuotone size={50} fill='#ed1c00' />
                                     { notification.notificationTimestampDT }

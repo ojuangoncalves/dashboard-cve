@@ -55,11 +55,11 @@ export default function HomePage(props: HomePageProps) {
   if (error) return <p>Erro ao carregar</p>;
 
   return (
-    <main className="flex flex-col justify-center gap-20">
-      <header className="">
-        <Header title="Monitoramento CVE" />
-      </header>
-      <div className="flex items-center justify-center gap-20 w-full my-20 text-white rounded-lg">
+    <main className="flex flex-col justify-center gap-20 py-20 px-10">
+
+      <Header title="Monitoramento CVE" />
+
+      <div className="flex items-center justify-center gap-20 w-full my-10 text-white rounded-lg">
         <StatusCard title="Disponível" value={allAvailableChargepoints} color="bg-dashgreen" />
         <StatusCard title="Offline" value={allOfflineChargepoints} color="bg-dashred" />
         <StatusCard title="Ocupado" value={allInuseChargepoints} color="bg-dashyellow" />

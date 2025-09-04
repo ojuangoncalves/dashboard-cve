@@ -41,8 +41,9 @@ export default function TenantCard(props: StatusCardProps) {
 
 
   return (
-    <div className={`flex flex-col items-center justify-between w-96 h-58 p-4 space-y-4 text-white transition-all duration-500 rounded-lg shadow-xl bg-[#302F2F] hover:scale-110 hover:shadow-2xl relative
-          ${offlineChargepoints > 0? "before:w-6 before:h-6 before:bg-dashred before:absolute before:-right-2 before:-top-2 before:rounded-full" : ""}`}>
+    <div className={`flex flex-col items-center justify-between w-96 h-58 p-4 space-y-4 text-white transition-all duration-500 rounded-lg -z-1 hover:scale-105 hover:shadow-4xl hover:shadow-card-shadow relative
+          ${offlineChargepoints > 0? "before:w-6 before:h-6 before:bg-dashred before:absolute before:-right-2 before:-top-2 before:rounded-full" : ""}
+          bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border shadow-card-shadow shadow-2xl`}>
       <h3 className="text-4xl font-semibold">{props.title}</h3>
 
       <div className="flex items-center justify-center w-full space-x-4">
@@ -54,7 +55,8 @@ export default function TenantCard(props: StatusCardProps) {
 
       <Link
         href={props.link}
-        className="flex items-center justify-center p-2 mt-4 space-x-2 text-xl transition-colors rounded-md bg-[#383636] w-full hover:brightness-125"
+        className="flex items-center justify-center p-2 mt-4 space-x-2 text-xl transition-colors rounded-md w-full brightness-125 hover:brightness-150
+                    bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border"
       >
         <span>Ver estações</span>
         <PiArrowRightBold size={20} />

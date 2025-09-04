@@ -19,11 +19,12 @@ export default function CauroselSection(props: CauroselProps) {
     <Carousel
       opts={{ loop: true, dragFree: true }}
       plugins={[Autoplay({ delay: 5000 })]}
+      className="w-[97%] self-center"
     >
-      <CarouselContent className="">
+      <CarouselContent className="h-64 flex items-center" >
         {props.allTenants?.map((tenant) => (
-          <CarouselItem className="-basis-1/4">
-            <TenantCard
+          <CarouselItem key={tenant.tenantPk} className="-basis-1/4">
+            <TenantCard 
               key={tenant.tenantPk}
               title={tenant.name}
               link={`/${tenant.tenantPk}`}
@@ -32,8 +33,16 @@ export default function CauroselSection(props: CauroselProps) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious className="text-black bg-dashgray border-dashgray" />
-      <CarouselNext className="text-black bg-dashgray border-dashgray" />
+      <CarouselPrevious
+        className="text-white h-32 mr-2 rounded-lg w-6 scale-200
+                    bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border
+                    brightness-125"
+      />
+      <CarouselNext
+        className="text-white h-32 ml-2 rounded-lg w-6 scale-200
+                    bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border
+                    brightness-125"
+        />
     </Carousel>
   );
 }

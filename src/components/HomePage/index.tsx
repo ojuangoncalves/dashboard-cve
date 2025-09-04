@@ -21,35 +21,35 @@ export default function HomePage(props: HomePageProps) {
     revalidateOnFocus: true,
   });
 
-  let allAvailableChargepoints: number = 0;
-  let allInuseChargepoints: number = 0;
-  let allOfflineChargepoints: number = 0;
-  let allMaintenanceChargepoints: number = 0;
+  let allAvailableChargepoints: number = 0
+  let allInuseChargepoints: number = 0
+  let allOfflineChargepoints: number = 0
+  let allMaintenanceChargepoints: number = 0
 
-  allTenants?.forEach((tenant) => {
-    tenant.chargepoints.forEach((chargepoint) => {
-      chargepoint.connectors.forEach((connector) => {
-        switch (connector.lastStatus.status) {
-          case "Available":
-          case "SuspendedEV":
-            allAvailableChargepoints += 1;
-            break;
-          case "Unavailable":
-          case "Faulted":
-            allOfflineChargepoints += 1;
-            break;
-          case "Charging":
-          case "Finishing":
-          case "Preparing":
-          case "SuspendedEVSE":
-            allInuseChargepoints += 1;
-            break;
-          case "Maintenance":
-            allMaintenanceChargepoints += 1;
-        }
-      });
-    });
-  });
+  allTenants?.forEach(tenant => {
+    tenant.chargepoints.forEach(chargepoint => {
+        chargepoint.connectors.forEach(connector => {
+            switch(connector.lastStatus.status) {
+            case "Available":
+			case "SuspendedEV":
+				allAvailableChargepoints += 1
+                break
+			case "Unavailable":
+			case "Faulted":
+				allOfflineChargepoints += 1
+                break
+			case "Charging":
+			case "Finishing":
+			case "Preparing":
+			case "SuspendedEVSE":
+				allInuseChargepoints += 1
+                break
+			case "Maintenance":
+				allMaintenanceChargepoints += 1
+            }
+        })
+    })
+  })
 
   if (isLoading) return <LoadingIndicator />;
   if (error) return <p>Erro ao carregar</p>;
@@ -65,7 +65,7 @@ export default function HomePage(props: HomePageProps) {
         <StatusCard title="Ocupado" value={allInuseChargepoints} color="bg-dashyellow" />
         <StatusCard title="Manutenção" value={allMaintenanceChargepoints} color="bg-dashgray" />
       </div>
-      <CauroselSection allTenants={allTenants} />
+      <CauroselSection allTenants={allTenants}/>
     </main>
   );
 }

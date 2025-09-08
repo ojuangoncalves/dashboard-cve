@@ -59,7 +59,7 @@ export default function HomePage(props: HomePageProps) {
 
       <Header title="Monitoramento CVE" />
 
-      <div className="flex items-center justify-center gap-20 w-full my-10 text-white rounded-lg">
+      <div className="grid grid-cols-2 lg:grid-cols-4 place-items-center items-center gap-10 lg:gap-20 w-full my-10 text-white rounded-lg">
         <StatusCard title="Disponível" value={allAvailableChargepoints} color="bg-dashgreen" />
         <StatusCard title="Offline" value={allOfflineChargepoints} color="bg-dashred" />
         <StatusCard title="Ocupado" value={allInuseChargepoints} color="bg-dashyellow" />

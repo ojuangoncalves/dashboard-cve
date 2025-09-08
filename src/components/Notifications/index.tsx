@@ -25,7 +25,7 @@ export default function Notifications(props: NotificationsProps) {
 
     return (
         <div
-            className='h-[700px] overflow-y-scroll lg:mt-12 xl:mt-4 custom-scrollbar rounded-xl shadow-xl p-5
+            className='h-[600px] overflow-y-scroll lg:mt-12 xl:mt-4 custom-scrollbar rounded-xl shadow-xl p-5
                         bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border'
         >
             <h2 className='text-3xl lg:text-4xl font-bold'>Notificações</h2>
@@ -36,7 +36,7 @@ export default function Notifications(props: NotificationsProps) {
                             return (
                                 <li
                                     key={notification.notificationPk}
-                                    className='flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm lg:text-lg px-8
+                                    className='flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm 2xl:text-lg px-8
                                                 bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border brightness-150'
                                 >
                                     <PiWifiHighFill size={50} />
@@ -49,7 +49,7 @@ export default function Notifications(props: NotificationsProps) {
                             return (
                                 <li
                                     key={notification.notificationPk}
-                                    className='flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm lg:text-lg px-8
+                                    className='flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm 2xl:text-lg px-8
                                                 bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border brightness-150'
                                 >
                                     <PiWifiSlashDuotone size={50} fill='#ed1c00' />

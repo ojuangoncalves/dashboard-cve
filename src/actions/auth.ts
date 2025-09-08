@@ -28,6 +28,6 @@ export async function loginUserAction(prevState: any, formData: FormData) {
     } catch(error: any) {
         return { error: error.message }
     }
-    
+
     redirect('/')
 }

@@ -31,16 +31,16 @@ export default function Dashboard(props: DashboardProps) {
 
 			<Link
 				href="/"
-				className='absolute left-14 top-16 flex flex-row items-center gap-2 px-4 py-2 rounded-md transition duration-300
+				className='absolute left-8 top-8 lg:left-14 lg:top-16 flex flex-row items-center gap-2 px-4 py-2 rounded-md transition duration-300
 							hover:bg-linear-180 hover:from-card-bg-1 hover:from-0% hover:to-card-bg-2 hover:to-100% hover:bg-card-bg-3
 							hover:border hover:border-solid hover:border-card-border hover:brightness-150'
 			>
 				<PiArrowLeftBold size={25} />
 				<PiHouseFill size={30} className="" />
-				<span>Página Inicial</span>
+				<span className='hidden xl:inline' >Página Inicial</span>
 			</Link>
 
-				<Header title='Monitoramento CVE'/>
+			<Header title='Monitoramento CVE'/>
 
       	<section className="flex flex-col-reverse items-center gap-10 lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:items-start mt-8">
         <Notifications headers={props.headers} chargePoints={chargePoints} />

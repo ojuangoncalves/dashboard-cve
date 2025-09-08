@@ -14,16 +14,26 @@ const config = {
 
 // pega os dados digitados no formulário, cria o cookie com o tokien de autenticação e chama a função de login
 export async function loginUserAction(prevState: any, formData: FormData) {
-    const fields = {
-        email: formData.get('email')?.toString(),
-        password: formData.get('password')?.toString()
+    try {
+        const fields = {
+            email: formData.get('email')?.toString(),
+            password: formData.get('password')?.toString()
+        }
+
+        console.log("antes da requisição")
+        
+        const responseData = await loginUserService(fields)
+        
+        console.log("depois da requisição e antes de setar o cookie")
+
+        const cookieStore = await cookies()
+
+        cookieStore.set("token", responseData.token, config)
+    } catch(error: any) {
+        console.log("erro")
+        return { error: error.message }
     }
 
-    const responseData = await loginUserService(fields)
-
-    const cookieStore = await cookies()
-    cookieStore.set("token", responseData.token, config)
-
+    console.log("antes do redirect")
     redirect('/')
-
 }

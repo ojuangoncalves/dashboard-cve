@@ -3,9 +3,13 @@
 import { useActionState } from "react"
 import { loginUserAction } from "@/actions/auth"
 
+const initialState = {
+    error: ''
+}
+
 export default function LoginForm() {
 
-    const [state, action] = useActionState(loginUserAction, undefined)
+    const [state, action] = useActionState(loginUserAction, initialState)
 
     return(
         <main className="flex flex-col items-center gap-20 w-full justify-center h-screen">
@@ -35,9 +39,9 @@ export default function LoginForm() {
                     />
                 </label>
 
-                {/* { state?.error && (
+                { state?.error && (
                     <p className="text-red-500 text-sm">{state.error}</p>
-                ) } */}
+                ) }
 
                 <div>
                     <button className="w-52 bg-[#2e8024] h-10 rounded-xl shadow-lg hover:brightness-125">Fazer Login</button>

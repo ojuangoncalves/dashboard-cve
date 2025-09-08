@@ -14,16 +14,20 @@ const config = {
 
 // pega os dados digitados no formulário, cria o cookie com o tokien de autenticação e chama a função de login
 export async function loginUserAction(prevState: any, formData: FormData) {
-    const fields = {
-        email: formData.get('email')?.toString(),
-        password: formData.get('password')?.toString()
+    try {
+        const fields = {
+            email: formData.get('email')?.toString(),
+            password: formData.get('password')?.toString()
+        }
+        
+        const responseData = await loginUserService(fields)
+
+        const cookieStore = await cookies()
+
+        cookieStore.set("token", responseData.token, config)
+    } catch(error: any) {
+        return { error: error.message }
     }
-
-    const responseData = await loginUserService(fields)
-
-    const cookieStore = await cookies()
-    cookieStore.set("token", responseData.token, config)
-
+    
     redirect('/')
-
 }

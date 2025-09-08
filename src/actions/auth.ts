@@ -19,21 +19,15 @@ export async function loginUserAction(prevState: any, formData: FormData) {
             email: formData.get('email')?.toString(),
             password: formData.get('password')?.toString()
         }
-
-        console.log("antes da requisição")
         
         const responseData = await loginUserService(fields)
-        
-        console.log("depois da requisição e antes de setar o cookie")
 
         const cookieStore = await cookies()
 
         cookieStore.set("token", responseData.token, config)
     } catch(error: any) {
-        console.log("erro")
         return { error: error.message }
     }
-
-    console.log("antes do redirect")
+    
     redirect('/')
 }

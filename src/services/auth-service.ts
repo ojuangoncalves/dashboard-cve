@@ -27,7 +27,11 @@ export async function loginUserService(userData: LoginUserProps) {
         
         return response
     } catch (error) {
-        console.error("Login service error: ", error)
-        throw error
+        if (axios.isAxiosError(error)) {
+            const message = error.response?.data?.message || "Usuário ou senha incorretos"
+            throw new Error(message)
+        }
+        
+        throw new Error("Erro inesperado, tente novamente")
     }
 }

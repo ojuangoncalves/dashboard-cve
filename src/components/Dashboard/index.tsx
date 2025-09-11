@@ -1,90 +1,95 @@
 "use client";
 
-import { useState, useEffect } from 'react'
+
+import useSWR from 'swr'
+import { PiHouseFill, PiArrowLeftBold } from 'react-icons/pi'
+
 import { getChargePointsData } from '@/utils/util'
 import Caption from '@/components/Caption'
 import Notifications from '@/components/Notifications'
+import LoadingIndicator from '../LoadingIndicator'
+import Header from '../Header'
+import Link from 'next/link'
 
 interface DashboardProps {
-  headers: customRequestHeaders;
+  headers: CustomRequestHeaders;
+  tenantPk: string;
 }
 
 export default function Dashboard(props: DashboardProps) {
-  const [chargePoints, setChargePoints] = useState<ChargePoint[]>([]);
-  // ciclo de requisições na API
-  useEffect(() => {
-    getChargePointsData(props.headers, setChargePoints);
+  
+	const { data: chargePoints, error, isLoading } = useSWR([props.tenantPk], ([tenantPk]) => getChargePointsData(tenantPk), {
+		refreshInterval: 60000,
+		revalidateOnFocus: true
+	})
 
-    const interval = setInterval(() => {
-      getChargePointsData(props.headers, setChargePoints);
-    }, 60000);
+	if (isLoading) return <LoadingIndicator />
+	if (error) return <p>Erro ao carregar</p>
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+    return (
+		<main className='flex flex-col justify-between gap-14 pt-20 px-10'>
 
-  return (
-    <main className="flex flex-col justify-between gap-14">
-      <header className="w-full h-12 flex justify-center items-center">
-        <h1 className="text-center text-3xl md:text-5xl font-bold">
-          Monitoramento CVE - Balneário Shopping
-        </h1>
-      </header>
+			<Link
+				href="/"
+				className='absolute left-8 top-8 lg:left-14 lg:top-16 flex flex-row items-center gap-2 px-4 py-2 rounded-md transition duration-300
+							hover:bg-linear-180 hover:from-card-bg-1 hover:from-0% hover:to-card-bg-2 hover:to-100% hover:bg-card-bg-3
+							hover:border hover:border-solid hover:border-card-border hover:brightness-150'
+			>
+				<PiArrowLeftBold size={25} />
+				<PiHouseFill size={30} className="" />
+				<span className='hidden xl:inline' >Página Inicial</span>
+			</Link>
 
-      <section className="flex flex-col-reverse items-center gap-10 lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:items-start">
-        <Notifications headers={props.headers} />
+			<Header title='Monitoramento CVE'/>
 
-			<div className='flex flex-col justify-between gap-14 xl:col-span-2'>
-				<Caption />
+      	<section className="flex flex-col-reverse items-center gap-10 lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:items-start mt-8">
+        <Notifications headers={props.headers} chargePoints={chargePoints} />
+        <div className="flex flex-col justify-between gap-14 xl:col-span-2">
+          <Caption />
 
-
-				<div className='grid-cols-2 md:grid-cols-3 lg:grid-cols-2 grid xl:grid-cols-3 w-full m-auto place-items-center gap-y-10 gap-x-5'>
-					{  
-						chargePoints.map(chargepoint => chargepoint.connectors.map(connector => {
-								switch (chargepoint.tenantPk) {
-									// filtra a estações apenas para o Tenant do Shopping
-									case 351:
-										switch (connector.lastStatus.status) {
-											case "Available":
-											case "SuspendedEV":
-												return (
-													<div key={chargepoint.chargeBoxPk} className='bg-[#2e8024] w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl'>
-													<img src={`/cveverde.png`} alt="" />
-													<p className="text-sm md:text-base">{ chargepoint.description}</p>
+					<div className='grid-cols-2 md:grid-cols-3 lg:grid-cols-2 grid xl:grid-cols-4 w-full m-auto place-items-center place-content-center content-center gap-y-10 gap-x-5'>
+						{  
+							chargePoints?.map(chargepoint => chargepoint.connectors.map(connector => {
+									switch (connector.lastStatus.status) {
+										case "Available":
+										case "SuspendedEV":
+											return (
+												<div key={chargepoint.chargeBoxPk} className='bg-dashgreen py-4 w-28 h-36 md:w-40 md:h-48 lg:w-52 lg:h-60 flex flex-col justify-center items-center text-center rounded-xl'>
+												<img src={`/cveverde.png`} alt="" />
+												<p className="text-sm md:text-base lg:text-lg font-bold">{ chargepoint.description}</p>
+											</div>
+											)
+										case "Unavailable":
+										case "Faulted":
+											return (
+												<div key={chargepoint.chargeBoxPk} className='bg-dashred py-4 w-28 h-36 md:w-40 md:h-48 lg:w-52 lg:h-60 flex flex-col justify-center items-center text-center rounded-xl animate-pulse-alert'>
+													<img src={`/cvevermelho.png`} alt="" />
+													<p className="text-sm md:text-base lg:text-lg font-bold">{ chargepoint.description}</p>
 												</div>
-												)
-											case "Unavailable":
-											case "Faulted":
-												return (
-													<div key={chargepoint.chargeBoxPk} className='bg-[#ed1c00] w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl animate-pulse-alert'>
-														<img src={`/cvevermelho.png`} alt="" />
-														<p className="text-sm md:text-base">{ chargepoint.description}</p>
-													</div>
-												)
-											case "Charging":
-											case "Finishing":
-											case "Preparing":
-											case "SuspendedEVSE":
-												return (
-													<div key={chargepoint.chargeBoxPk} className='bg-[#e4c306] w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl'>
-														<img src={`/cveamarelo.png`} alt="" />
-														<p className="">{ chargepoint.description}</p>
-													</div>
-												)
-											case "Maintenance":
-												return (
-													<div key={chargepoint.chargeBoxPk} className='bg-[#525252] w-28 h-28 md:w-40 md:h-40 flex flex-col justify-center items-center text-center rounded-xl'>
-														<img src={`/cvecinza.png`} alt="" />
-														<p className="">{ chargepoint.description}</p>
-													</div>
-												)
+											)
+										case "Charging":
+										case "Finishing":
+										case "Preparing":
+										case "SuspendedEVSE":
+											return (
+												<div key={chargepoint.chargeBoxPk} className='bg-dashyellow py-4 w-28 h-36 md:w-40 md:h-48 lg:w-52 lg:h-60 flex flex-col justify-center items-center text-center rounded-xl'>
+													<img src={`/cveamarelo.png`} alt="" />
+													<p className="text-sm md:text-base lg:text-lg font-bold">{ chargepoint.description}</p>
+												</div>
+											)
+										case "Maintenance":
+											return (
+												<div key={chargepoint.chargeBoxPk} className='bg-dashgray py-4 w-28 h-36 md:w-40 md:h-48 lg:w-52 lg:h-60 flex flex-col justify-center items-center text-center rounded-xl'>
+													<img src={`/cvecinza.png`} alt="" />
+													<p className="text-sm md:text-base lg:text-lg font-bold">{ chargepoint.description}</p>
+												</div>
+											)
 										}
-								}	}))
-					}
+							}))
+						}
+					</div>
 				</div>
-			</div>
-		</section>
-	</main>
+			</section>
+		</main>
     )
 }

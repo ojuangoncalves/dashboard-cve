@@ -1,42 +1,48 @@
-import { useEffect, useState} from 'react'
+
+// import axios from 'axios'
+import { useRef} from 'react'
 import { getNotificationsData } from '@/utils/util'
 import { PiWifiHighFill, PiWifiSlashDuotone, PiArrowRightBold } from 'react-icons/pi'
+import useSWR from 'swr'
+import LoadingIndicator from '../LoadingIndicator'
 
 interface NotificationsProps {
-    headers: customRequestHeaders
+    headers: CustomRequestHeaders
+    chargePoints?: ChargePoint[]
 }
 
 export default function Notifications(props: NotificationsProps) {
-    const [notifications, setNotifications] = useState<chargeBoxNotification[]>([])
 
-    useEffect(() => {
-        getNotificationsData(props.headers, setNotifications)
+    const chargePointsId = props.chargePoints?.map(chargepoint => chargepoint.chargeBoxId)
+    const ids = useRef(chargePointsId).current
 
-        const interval = setInterval(() => {
-            getNotificationsData(props.headers, setNotifications)
-        }, 60000)
-
-        return () => {
-            clearInterval(interval)
-        }
-
-    }, [])
+    const { data: notifications, error, isLoading } = useSWR([ids], ([ids]) => getNotificationsData(ids), {
+        refreshInterval: 60000,
+        revalidateOnFocus: true
+    })
+    
+    if(isLoading) return <LoadingIndicator />
+    if(error) return <p>Erro ao carregar</p>
 
     return (
-        <div className='h-[500px] overflow-y-scroll lg:mt-12 xl:mt-4 custom-scrollbar rounded-xl bg-neutral-700 shadow-xl p-5'>
-            <h2 className='text-3xl font-bold'>Notificações</h2>
+        <div
+            className='h-[600px] overflow-y-scroll lg:mt-12 xl:mt-4 custom-scrollbar rounded-xl shadow-xl p-5
+                        bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border'
+        >
+            <h2 className='text-3xl lg:text-4xl font-bold'>Notificações</h2>
             <ul>
-                { notifications.map((notification: chargeBoxNotification) => {
+                { notifications?.map((notification: ChargeBoxNotification) => {
                     switch(notification.type) {
                         case "Connected":
                             return (
                                 <li
                                     key={notification.notificationPk}
-                                    className='bg-neutral-500 flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm px-8'
+                                    className='flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm 2xl:text-lg px-8
+                                                bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border brightness-150'
                                 >
-                                    <PiWifiHighFill size={30} />
+                                    <PiWifiHighFill size={50} />
                                     { notification.notificationTimestampDT }
-                                    <PiArrowRightBold size={40} />
+                                    <PiArrowRightBold size={50} />
                                     { notification.chargeBoxName }: Conectada
                                 </li>
                             )
@@ -44,11 +50,12 @@ export default function Notifications(props: NotificationsProps) {
                             return (
                                 <li
                                     key={notification.notificationPk}
-                                    className='bg-neutral-500 flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm px-8'
+                                    className='flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm 2xl:text-lg px-8
+                                                bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border brightness-150'
                                 >
-                                    <PiWifiSlashDuotone size={30} fill='#ed1c00' />
+                                    <PiWifiSlashDuotone size={50} fill='#ed1c00' />
                                     { notification.notificationTimestampDT }
-                                    <PiArrowRightBold size={40} />
+                                    <PiArrowRightBold size={50} />
                                     { notification.chargeBoxName }: Desconectada
                                 </li>
                             )

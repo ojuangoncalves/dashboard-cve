@@ -1,12 +1,10 @@
-import Dashboard from "@/components/Dashboard"
-
-import { getHeaders } from "@/utils/util"
+import { getHeaders } from "@/utils/util";
+import HomePage from "@/components/HomePage";
 
 export default async function Home() {
+  const headers = await getHeaders();
 
-	const headers = await getHeaders()
-
-	return(
-		<Dashboard headers={headers} />
-	)
+  return (
+    <HomePage headers={headers} />
+  );
 }

@@ -49,20 +49,6 @@ export const getHeaders = async ()=> {
     return header
 }
 
-export const bsChargeBoxs: Record<string, string> = {
-    bs01: 'JDBM1900047JI',
-    bs02: 'JDBM1400041QQ',
-    bs03: 'JDBM1400051N7',
-    bs04: 'JDBM1900034XZ',
-    bs05: 'JCBM1400043WL',
-    bs06: 'JDBM1400068Q8'
-}
-
-export const testeChargeBoxs: Record<string, string> = {
-    st01: 'MOVE_LAB_INTELBRAS01',
-    st02: 'MOVE_LAB_INTELBRAS03'
-}
-
 // Responsável por ajustar a data da notificão para o horário correto
 const adjustNotificationTime = (dateTimeString: string): string => {
     const [datePart, timePart] = dateTimeString.split(' ')
@@ -81,10 +67,10 @@ const adjustNotificationTime = (dateTimeString: string): string => {
 }
 
 // Pega a notificação das estações selecionadas
-export async function getNotificationsData(headers: customRequestHeaders,
-        setNotifications: React.Dispatch<SetStateAction<chargeBoxNotification[]>>
-) {
-
+export async function getNotificationsData(chargeBoxIds?: string[]) {
+    const headers = await getHeaders()
+    let adjustedNotifications: ChargeBoxNotification[] = []
+    
     try {
         await axios(`${baseUrl}/api/v1/notification/chargeBox`, {
             method: 'get',
@@ -94,33 +80,65 @@ export async function getNotificationsData(headers: customRequestHeaders,
                 Accept: headers.Accept
             },
             params: {
-                chargeBoxIds: Object.values(bsChargeBoxs),
+                chargeBoxIds: chargeBoxIds,
                 limit: 20
             }
         })
         .then(resp => resp.data)
         .then(resp => {
             // Ajusta o horário para cada notificação
-            const adjustedNotifications = resp.notificationList.map((notification: chargeBoxNotification) => ({
+            adjustedNotifications = resp.notificationList.map((notification: ChargeBoxNotification) => ({
                 ...notification,
                 notificationTimestampDT: adjustNotificationTime(notification.notificationTimestampDT)
             }))
-            setNotifications(adjustedNotifications)
-            // console.log(adjustedNotifications)
         })
     } catch(error) {
         console.error("Erro ao buscar dados: ", error)
         return
     }
+
+    return adjustedNotifications
 }
 
 
 // Pega os dados de todas as estações do Balneário Shopping
-export async function getChargePointsData(headers: customRequestHeaders,
-        setChargePoints: React.Dispatch<React.SetStateAction<ChargePoint[]>>
-    ) {
+export async function getChargePointsData(tenantPk?: string) {
 
     let allChargePoints: ChargePoint[] = []
+    const headers = await getHeaders()
+
+    try {
+        await axios(`${baseUrl}/api/v1/chargepoints`, {
+            method: "get",
+            headers: {
+                Platform: headers.Platform,
+                Authorization: headers.Authorization,
+                Accept: headers.Accept
+            },
+            params: {
+                tenantPk: tenantPk
+            }
+        })
+        .then(resp => resp.data)
+        .then(resp => {
+            allChargePoints = resp.chargePointList
+        })
+    } catch (error) {
+        console.error("Erro ao buscar dados: ", error)
+        return
+    }
+
+    allChargePoints.sort((a, b) => a.description.localeCompare(b.description))
+
+
+    return allChargePoints
+}
+
+export async function createTenants() {
+
+    let allChargePoints: ChargePoint[] = []
+
+    const headers = await getHeaders()
 
     try {
         await axios(`${baseUrl}/api/v1/chargepoints`, {
@@ -134,15 +152,22 @@ export async function getChargePointsData(headers: customRequestHeaders,
         .then(resp => resp.data)
         .then(resp => {
             allChargePoints = resp.chargePointList
-            // setChargePoints(resp.chargePointList)
         })
     } catch (error) {
         console.error("Erro ao buscar dados: ", error)
         return
     }
 
-    let chargePointsBS = allChargePoints.filter(chargePoint => chargePoint.tenantPk == 351)
-    chargePointsBS.sort((a, b) => a.description.localeCompare(b.description))
+    let balnearioChargepoints :Tenant = { name: "Balneário", tenantPk: 351, chargepoints: [] }
 
-    setChargePoints(chargePointsBS)
+    allChargePoints.forEach(chargepoint => {
+        switch(chargepoint.tenantPk) {
+            case 351:
+                balnearioChargepoints.chargepoints.push(chargepoint)
+        }
+    })
+    const allTenants = [balnearioChargepoints]
+
+
+    return allTenants
 }

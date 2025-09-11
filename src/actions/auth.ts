@@ -12,16 +12,20 @@ const config = {
     secure: process.env.NODE_ENV === "production"
 }
 export async function loginUserAction(prevState: any, formData: FormData) {
-    const fields = {
-        email: formData.get('email')?.toString(),
-        password: formData.get('password')?.toString()
+    try {
+        const fields = {
+            email: formData.get('email')?.toString(),
+            password: formData.get('password')?.toString()
+        }
+        
+        const responseData = await loginUserService(fields)
+
+        const cookieStore = await cookies()
+
+        cookieStore.set("token", responseData.token, config)
+    } catch(error: any) {
+        return { error: error.message }
     }
 
-    const responseData = await loginUserService(fields)
-
-    const cookieStore = await cookies()
-    cookieStore.set("token", responseData.token, config)
-
     redirect('/')
-
 }

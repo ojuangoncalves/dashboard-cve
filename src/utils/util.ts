@@ -168,5 +168,6 @@ export async function createTenants() {
     })
     const allTenants = [balnearioChargepoints]
 
+
     return allTenants
 }

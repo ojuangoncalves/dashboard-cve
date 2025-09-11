@@ -1,3 +1,4 @@
+
 // import axios from 'axios'
 import { useRef} from 'react'
 import { getNotificationsData } from '@/utils/util'
@@ -19,7 +20,7 @@ export default function Notifications(props: NotificationsProps) {
         refreshInterval: 60000,
         revalidateOnFocus: true
     })
-
+    
     if(isLoading) return <LoadingIndicator />
     if(error) return <p>Erro ao carregar</p>
 
@@ -58,17 +59,6 @@ export default function Notifications(props: NotificationsProps) {
                                     { notification.chargeBoxName }: Desconectada
                                 </li>
                             )
-                        // default:
-                        //     return(
-                        //         <li
-                        //             key={notification.notificationPk}
-                        //             className='bg-neutral-500 flex flex-row justify-center items-center gap-4 my-8 h-32 rounded-lg text-sm px-8'
-                        //         >
-                        //             { notification.notificationTimestampDT }
-                        //             <PiArrowRightBold size={40} />
-                        //             { notification.chargeBoxName }: { notification.type }
-                        //         </li>
-                        //     )
                     }
                     }) }
             </ul>

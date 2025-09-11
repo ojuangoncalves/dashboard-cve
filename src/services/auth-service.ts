@@ -6,7 +6,6 @@ interface LoginUserProps {
     password: string | undefined
 }
 
-// Realiza a requisição de login do usuário
 export async function loginUserService(userData: LoginUserProps) {
     const url = `${baseUrl}/api/v1/login`
 

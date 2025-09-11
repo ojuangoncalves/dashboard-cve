@@ -44,7 +44,6 @@ export default function Dashboard(props: DashboardProps) {
 
       	<section className="flex flex-col-reverse items-center gap-10 lg:grid xl:grid-cols-3 lg:grid-cols-2 lg:items-start mt-8">
         <Notifications headers={props.headers} chargePoints={chargePoints} />
-
         <div className="flex flex-col justify-between gap-14 xl:col-span-2">
           <Caption />
 

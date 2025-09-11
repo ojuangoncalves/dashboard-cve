@@ -41,7 +41,7 @@ export default function TenantCard(props: StatusCardProps) {
 
 
   return (
-    <div className={`flex flex-col items-center justify-between w-96 h-58 p-4 space-y-4 text-white transition-all duration-500 rounded-lg -z-1 hover:scale-105 hover:shadow-4xl hover:shadow-card-shadow relative
+    <div className={`flex flex-col items-center justify-between w-96 h-58 p-4 space-y-4 text-white transition-all duration-500 rounded-lg hover:scale-105 hover:shadow-4xl hover:shadow-card-shadow relative
           ${offlineChargepoints > 0? "before:w-6 before:h-6 before:bg-dashred before:absolute before:-right-2 before:-top-2 before:rounded-full" : ""}
           bg-linear-180 from-card-bg-1 from-0% to-card-bg-2 to-100% bg-card-bg-3 border border-solid border-card-border shadow-card-shadow shadow-2xl`}>
       <h3 className="text-4xl font-semibold">{props.title}</h3>

@@ -4,7 +4,7 @@ import Dashboard from "@/components/Dashboard"
 import { getHeaders } from "@/utils/util"
 
 
-const validTenants = ["351", "92", "111", "261", "301", "305"]
+const validTenants = ["351"]
 
 // @ts-ignore
 export default async function Tenant(

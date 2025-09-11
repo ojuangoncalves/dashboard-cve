@@ -1,6 +1,6 @@
 "use client";
 
-import Autoplay from "embla-carousel-autoplay";
+import AutoScroll from 'embla-carousel-auto-scroll'
 import TenantCard from "../TenantCard";
 import {
   Carousel,
@@ -18,7 +18,7 @@ export default function CauroselSection(props: CauroselProps) {
   return (
     <Carousel
       opts={{ loop: true, dragFree: true }}
-      plugins={[Autoplay({ delay: 5000 })]}
+      plugins={[AutoScroll({ startDelay: 3000, speed: 1.5, stopOnMouseEnter: true, stopOnInteraction: false })]}
       className="w-[97%] self-center"
     >
       <CarouselContent className="h-64 flex items-center" >

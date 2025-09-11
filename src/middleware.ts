@@ -3,13 +3,13 @@ import type { NextRequest } from 'next/server'
 
 import { getAuthToken } from "./services/get-token";
 
-const protectedRoutes = ['/']
+const protectedRoutes = [/^\/$/, /^\/\d+$/]
 
 export default async function middleware(req: NextRequest) {
 
     const userToken = await getAuthToken()
     const currentPath = req.nextUrl.pathname
-    const isProtectedRoute = protectedRoutes.includes(currentPath)
+    const isProtectedRoute = protectedRoutes.some((regex) => regex.test(currentPath))
 
     if (isProtectedRoute && !userToken) {
         return NextResponse.redirect(new URL ('/login', req.url))

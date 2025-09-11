@@ -9,8 +9,6 @@ interface LoginUserProps {
 export async function loginUserService(userData: LoginUserProps) {
     const url = `${baseUrl}/api/v1/login`
 
-    console.log(url)
-
     const loginHeaders = new AxiosHeaders(`
         Platform: API
         Api-Key: ${apiKey}

@@ -1,5 +1,7 @@
 // pages/index.tsx
 
+// teste
+
 import StatusCard from "../StatusCard";
 
 const HomeCard = () => {

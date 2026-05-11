@@ -5,7 +5,7 @@ import { getAuthToken } from "./services/get-token";
 
 const protectedRoutes = [/^\/$/, /^\/\d+$/]
 
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
 
     const userToken = await getAuthToken()
     const currentPath = req.nextUrl.pathname

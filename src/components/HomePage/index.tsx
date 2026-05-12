@@ -5,7 +5,7 @@ import { createTenants, baseUrl } from "@/utils/util";
 import LoadingIndicator from "../LoadingIndicator";
 import Header from "../Header";
 import StatusCard from "../StatusCard";
-import CauroselSection from "../CauroselSection";
+import Notifications from "../Notifications";
 
 interface HomePageProps {
   headers: CustomRequestHeaders;
@@ -21,31 +21,15 @@ export default function HomePage(props: HomePageProps) {
     revalidateOnFocus: true,
   });
 
-  let allAvailableChargepoints: number = 0
-  let allInuseChargepoints: number = 0
   let allOfflineChargepoints: number = 0
-  let allMaintenanceChargepoints: number = 0
+  let allChargepoints: ChargePoint[] = []
 
   allTenants?.forEach(tenant => {
     tenant.chargepoints.forEach(chargepoint => {
+        allChargepoints.push(chargepoint)
         chargepoint.connectors.forEach(connector => {
-            switch(connector.lastStatus.status) {
-            case "Available":
-			case "SuspendedEV":
-				allAvailableChargepoints += 1
-                break
-			case "Unavailable":
-			case "Faulted":
-				allOfflineChargepoints += 1
-                break
-			case "Charging":
-			case "Finishing":
-			case "Preparing":
-			case "SuspendedEVSE":
-				allInuseChargepoints += 1
-                break
-			case "Maintenance":
-				allMaintenanceChargepoints += 1
+            if(connector.lastStatus.status == "Unavailable" || connector.lastStatus.status == "Faulted") {
+              allOfflineChargepoints += 1
             }
         })
     })
@@ -55,17 +39,14 @@ export default function HomePage(props: HomePageProps) {
   if (error) return <p>Erro ao carregar</p>;
 
   return (
-    <main className="flex flex-col justify-center gap-20 py-20 px-10">
+    <main className="flex flex-col justify-center gap-8 pt-20 px-10">
 
       <Header title="Monitoramento CVE" />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 place-items-center items-center gap-10 lg:gap-20 w-full my-10 text-white rounded-lg">
-        <StatusCard title="Disponível" value={allAvailableChargepoints} color="bg-dashgreen" />
-        <StatusCard title="Offline" value={allOfflineChargepoints} color="bg-dashred" />
-        <StatusCard title="Ocupado" value={allInuseChargepoints} color="bg-dashyellow" />
-        <StatusCard title="Manutenção" value={allMaintenanceChargepoints} color="bg-dashgray" />
+      <div className="flex flex-row justify-around items-center w-full my-10 text-white rounded-lg">
+        <StatusCard title="Conectores offline" value={allOfflineChargepoints} color={allOfflineChargepoints > 0 ? "bg-dashred" : "bg-dashgreen"} />
+        <Notifications chargePoints={allChargepoints}  />
       </div>
-      <CauroselSection allTenants={allTenants}/>
     </main>
   );
 }

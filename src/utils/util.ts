@@ -134,6 +134,52 @@ export async function getChargePointsData(tenantPk?: string) {
     return allChargePoints
 }
 
+export async function getChargePointWithPk(chargeBoxPk?: number) {
+    const headers = await getHeaders()
+
+    try {
+        const resp = await axios(`${baseUrl}/api/v1/${chargeBoxPk}`, {
+            method: "get",
+            headers: {
+                Platform: headers.Platform,
+                Authorization: headers.Authorization,
+                Accept: headers.Accept
+            }
+        })
+
+        return resp.data as ChargePoint
+
+    } catch (error) {
+        console.error("Error ao buscar dados: ", error)
+        return
+    }
+}
+
+export async function fetcherVerifyDesconnetions(key: string, notifications: ChargeBoxNotification[], chargePoints: ChargePoint[]) {
+    if (!notifications || notifications.length === 0) return []
+
+    const latest5Desconnections = notifications.filter(n => n.type === "Disconnected").slice(0, 5)
+
+    const promisesValidation = latest5Desconnections.map(async (notification) => {
+         const chargePointInfo = chargePoints.find(cp => cp.chargeBoxId === notification.chargeBoxId)
+         if (!chargePointInfo?.chargeBoxPk) return null
+
+         try {
+            const chargePointData = await getChargePointWithPk(chargePointInfo.chargeBoxPk)
+
+            const isDisconnected = chargePointData?.connectors.some(connector => connector.lastStatus.status === "Faulted" || connector.lastStatus.status === "Unavailable")
+
+            return isDisconnected ? notification : null
+         } catch (error) {
+            console.error("Erro na API SWR", error)
+            return null
+         }
+    })
+
+    const results = await Promise.all(promisesValidation)
+    return results.filter((item): item is ChargeBoxNotification => item != null)
+}
+
 export async function createTenants() {
 
     let allChargePoints: ChargePoint[] = []

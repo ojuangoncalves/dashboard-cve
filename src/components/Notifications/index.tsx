@@ -1,10 +1,11 @@
 
 // import axios from 'axios'
 import { useRef} from 'react'
-import { fetcherVerifyDesconnetions, getNotificationsData } from '@/utils/util'
+import { fetcherVerifyDesconnections, getNotificationsData } from '@/utils/util'
 import { PiArrowRightBold, PiWarningFill } from 'react-icons/pi'
 import useSWR from 'swr'
 import LoadingIndicator from '../LoadingIndicator'
+import { useNotify } from '@/hooks/useNotify';
 
 interface NotificationsProps {
     headers?: CustomRequestHeaders
@@ -21,7 +22,16 @@ export default function Notifications(props: NotificationsProps) {
         revalidateOnFocus: true
     })
 
-    const { data: latestDisconnections, error: errorLatestDisconnections, isLoading: isLoadingLatestDisconnections } = useSWR(notifications?.length ? ['validar', notifications, props.chargePoints] : null, fetcherVerifyDesconnetions)
+    console.log("notificaçoes:", notifications)
+
+    const {data: latestDisconnections,
+           error: errorLatestDisconnections,
+           isLoading: isLoadingLatestDisconnections } = useSWR(
+            notifications?.length ? ['validar', notifications, props.chargePoints] : null,
+            ([Key, notifs, cps]) => fetcherVerifyDesconnections(Key, notifs, cps)
+           )
+
+    useNotify({ notifications: latestDisconnections })
     
     if(isLoadingGetNotifications) return <LoadingIndicator />
     if(errorGetNotifications) return <p>Erro ao carregar</p>

@@ -1,23 +1,14 @@
 import axios from 'axios'
 
 import { getAuthToken } from '@/services/get-token'
-import { SetStateAction } from 'react'
-// import { PrismaClient } from "../../prisma/generated/prisma";
-
-// const globalForPrisma = global as unknown as { prisma: PrismaClient }
-// export const prisma = globalForPrisma.prisma || new PrismaClient()
-
-// if (process.env.NODE_ENV != 'production') {
-//   globalForPrisma.prisma = prisma;
-// }
 
 export const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 export const apiKey = process.env.NEXT_PUBLIC_API_KEY
 
-// export const smtpUser = process.env.SMTP_USER
-// export const smtpPass = process.env.SMTP_PASSWORD
-// export const smtpHost = process.env.SMTP_HOST
-// export const smtpPort = process.env.SMTP_PORT
+export const smtpUser = process.env.SMTP_USER
+export const smtpPass = process.env.SMTP_PASSWORD
+export const smtpHost = process.env.SMTP_HOST
+export const smtpPort = process.env.SMTP_PORT
 
 const getUserToken = async() => {
     let userToken: string | undefined
@@ -29,9 +20,6 @@ const getUserToken = async() => {
         .catch(() => {
             userToken = ''
         })
-
-    // console.log(baseUrl)
-    // console.log(apiKey)
 
     return userToken
 }
@@ -137,8 +125,9 @@ export async function getChargePointsData(tenantPk?: string) {
 export async function getChargePointWithPk(chargeBoxPk?: number) {
     const headers = await getHeaders()
 
+
     try {
-        const resp = await axios(`${baseUrl}/api/v1/${chargeBoxPk}`, {
+        const resp = await axios(`${baseUrl}/api/v1/chargepoints/${chargeBoxPk}`, {
             method: "get",
             headers: {
                 Platform: headers.Platform,
@@ -147,7 +136,7 @@ export async function getChargePointWithPk(chargeBoxPk?: number) {
             }
         })
 
-        return resp.data as ChargePoint
+        return resp.data as ChargePointPkResponse
 
     } catch (error) {
         console.error("Error ao buscar dados: ", error)
@@ -155,19 +144,20 @@ export async function getChargePointWithPk(chargeBoxPk?: number) {
     }
 }
 
-export async function fetcherVerifyDesconnetions(key: string, notifications: ChargeBoxNotification[], chargePoints: ChargePoint[]) {
+export async function fetcherVerifyDesconnections(key: string, notifications: ChargeBoxNotification[], chargePoints?: ChargePoint[]) {
     if (!notifications || notifications.length === 0) return []
 
     const latest5Desconnections = notifications.filter(n => n.type === "Disconnected").slice(0, 5)
 
     const promisesValidation = latest5Desconnections.map(async (notification) => {
-         const chargePointInfo = chargePoints.find(cp => cp.chargeBoxId === notification.chargeBoxId)
+         const chargePointInfo = chargePoints?.find(cp => cp.chargeBoxId === notification.chargeBoxId)
+
          if (!chargePointInfo?.chargeBoxPk) return null
 
          try {
             const chargePointData = await getChargePointWithPk(chargePointInfo.chargeBoxPk)
 
-            const isDisconnected = chargePointData?.connectors.some(connector => connector.lastStatus.status === "Faulted" || connector.lastStatus.status === "Unavailable")
+            const isDisconnected = chargePointData?.chargePointDetail.connectors.some(connector => connector.lastStatus.status === "Faulted" || connector.lastStatus.status === "Unavailable")
 
             return isDisconnected ? notification : null
          } catch (error) {

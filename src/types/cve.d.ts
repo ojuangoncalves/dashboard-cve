@@ -126,6 +126,13 @@ interface Address {
     uuid: string;
     voltage: number; // integer($int32)
   }
+
+  interface ChargePointPkResponse {
+    error: string;
+    chargePointDetail: ChargePoint;
+    paymentPrepaymentMin: string;
+    chargePointApiKey: string
+  }
   
   interface ChargePointListResponse {
     chargePointList: ChargePoint[];

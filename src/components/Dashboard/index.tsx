@@ -49,7 +49,9 @@ export default function Dashboard(props: DashboardProps) {
 
 					<div className='grid-cols-2 md:grid-cols-3 lg:grid-cols-2 grid xl:grid-cols-4 w-full m-auto place-items-center place-content-center content-center gap-y-10 gap-x-5'>
 						{  
-							chargePoints?.map(chargepoint => chargepoint.connectors.map(connector => {
+							chargePoints?.filter(chargepoint => chargepoint.chargeBoxId != "JDBL2700052BP" && chargepoint.chargeBoxId != "JDBL4600033LV")
+							.map(chargepoint => chargepoint.connectors.map(connector => {
+									
 									switch (connector.lastStatus.status) {
 										case "Available":
 										case "SuspendedEV":
